@@ -1,0 +1,122 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
+        crossorigin="anonymous">
+
+    <link rel="stylesheet" href="./style/style.css">
+
+    <title>
+
+    </title>
+    <script type="text/javascript">
+        function getInformations() {
+            var cityName = document.getElementById('cityID').value;
+            console.log("Je vais à la recherche des informations sur la ville de" + cityName);
+
+            var xhr = new XMLHttpRequest();
+            var url = 'findInformations?cityName=' + cityName;
+
+            xhr.open('GET', url, true);
+
+            // la définition d'un écouteur
+            // qui sera appelé quand la requête a répondu
+            // (evenement "load")
+            xhr.onload = function (e) {
+                var infosMeteo = JSON.parse(this.response);
+                console.log("informations arrivées")
+                document.getElementById('afficheuse').innerHTML=infosMeteo.main.temp;
+                // ajouteResultatsAuDiv(restaurants)
+            };
+
+            // On envoie la requête
+            xhr.send();
+        }</script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <header>
+            <div id="navbar">
+
+                <nav class="navbar navbar-light bg-faded">
+                    <form class="form-inline">
+                        <input class="form-control mr-sm-2" type="text" id="cityID" placeholder="Search">
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit" onclick="getInformations();">Search</button>
+                    </form>
+                </nav>
+            </div>
+        </header>
+        <div class="panel-group">
+            <div id="infoMeteo" class="panel panel-info">
+                <div class="panel-heading">Info Météo</div>
+                <div class="panel-body">
+                </div>
+            </div>
+            <div id="infoMeteo" class="panel panel-info">
+                <div class="panel-heading">Visualisation</div>
+                <div class="panel-body">
+                    <textarea id="afficheuse"></textarea>
+                </div>
+            </div>
+            <div id="cityMap" class="panel panel-info">
+                <div class="panel-heading">Sur la mapmonde</div>
+                <div class="panel-body">
+
+                    <div id="map"></div>
+                    <script>
+                        function initMap() {
+                            var uluru = { lat: -25.363, lng: 131.044 };
+                            var map = new google.maps.Map(document.getElementById('map'), {
+                                zoom: 4,
+                                center: uluru
+                            });
+                            var marker = new google.maps.Marker({
+                                position: uluru,
+                                map: map
+                            });
+                        }
+                    </script>
+                    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACTOnS_8awBwqJ7mlb6pJtyLXcnIhDduw&callback=initMap">
+        </script>
+                </div>
+            </div>
+            <div id="cityEvents" class="panel panel-info">
+                <div class="panel-heading">Evènements sur la ville</div>
+                <div class="panel-body">
+                    <div class="list-group">
+                        <a href="#" class="list-group-item active">
+                            Cras justo odio
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action">Dapibus ac facilisis in</a>
+                        <a href="#" class="list-group-item list-group-item-action">Morbi leo risus</a>
+                        <a href="#" class="list-group-item list-group-item-action">Porta ac consectetur ac</a>
+                        <a href="#" class="list-group-item list-group-item-action disabled">Vestibulum at eros</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer></footer>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
+        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
