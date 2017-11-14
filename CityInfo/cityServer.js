@@ -13,7 +13,7 @@ app.get('/', function (req, res) {
 app.get('/findInformations', function (req, res) {
     console.log("J'ai bien récupéré le nom de la ville : "+req.query.cityName);
     weather.getCityInfoMeteo(req.query.cityName,function(body) {
-        console.log("Température de test : "+JSON.parse(body).main.temp+";");
+      //  console.log("Température de test : "+JSON.parse(body).main.temp+";");
     res.end(JSON.stringify(body));
   });
 
@@ -21,8 +21,5 @@ app.get('/findInformations', function (req, res) {
 });
 
 app.listen(3000, function () {
-
   console.log("Server is listening on port 3000");
-  console.log("Open http://localhost:3000 and upload some files!");
-
 });

@@ -11,11 +11,12 @@ function getCityInfoMeteo(city, callback) {
             body += chunk;
         });
         response.on('end', function () {
-           // console.log("Elément retourné :"+body);
+            console.log("Elément retourné :" + body);
             if (response.statusCode === 200) {
                 try {
                     var data_weather = JSON.parse(body);
                     printMessage(city, data_weather.main.temp, data_weather.main.pressure);
+                    console.log("Coordonnées : "+data_weather.coord.lat)
                     callback(body);
                 } catch (error) {
                     console.error(error.message);

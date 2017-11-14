@@ -17,28 +17,58 @@
 
     </title>
     <script type="text/javascript">
+        var uluru = { lat: -25.363, lng: 131.044 };
         function getInformations() {
             var cityName = document.getElementById('cityID').value;
-            console.log("Je vais à la recherche des informations sur la ville de" + cityName);
+            console.log("Je vais à la recherche des informations sur la ville de " + cityName);
 
             var xhr = new XMLHttpRequest();
             var url = 'findInformations?cityName=' + cityName;
 
-            xhr.open('GET', url, true);
-
-            // la définition d'un écouteur
-            // qui sera appelé quand la requête a répondu
-            // (evenement "load")
-            xhr.onload = function (e) {
-                var infosMeteo = JSON.parse(this.response);
-                console.log("informations arrivées")
-                document.getElementById('afficheuse').innerHTML=infosMeteo.main.temp;
-                // ajouteResultatsAuDiv(restaurants)
-            };
-
-            // On envoie la requête
-            xhr.send();
-        }</script>
+            /*  xhr.open('GET', url, true);
+  
+              // la définition d'un écouteur
+              // qui sera appelé quand la requête a répondu
+              // (evenement "load")
+              xhr.onload = function (e) {
+                  var infosMeteo = JSON.parse(this.response);
+                  constructPage(infosMeteo)
+              };
+              // On envoie la requête
+              xhr.send(null);*/
+              function readBody(xhr) {
+                var data;
+                if (!xhr.responseType || xhr.responseType === "text") {
+                    data = xhr.responseText;
+                } else if (xhr.responseType === "document") {
+                    data = xhr.responseXML;
+                } else {
+                    data = JSON.parse(xhr.response);
+                }
+                return data;
+            }
+            
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', url, false);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4) {
+                    var result=readBody(xhr);
+                    console.log(result);
+                    constructPage(result);
+                }
+            }
+            xhr.send(null);
+        }
+        function constructPage(result) {
+            console.log("informations arrivées")
+            var textarea = document.getElementById('afficheuse'); // on récup le textarea
+            textarea.value += result;
+            uluru.lat = result.coord.lat;
+            uluru.lng = result.coord.lon;
+            initMap();// on lui ajoute les balises
+            //document.getElementById('afficheuse').innerHTML = infosMeteo.main.temp.toString;
+        }
+    </script>
 </head>
 
 <body>
@@ -63,7 +93,7 @@
             <div id="infoMeteo" class="panel panel-info">
                 <div class="panel-heading">Visualisation</div>
                 <div class="panel-body">
-                    <textarea id="afficheuse"></textarea>
+                    <textarea name="jdsf" id="afficheuse"></textarea>
                 </div>
             </div>
             <div id="cityMap" class="panel panel-info">
@@ -73,7 +103,6 @@
                     <div id="map"></div>
                     <script>
                         function initMap() {
-                            var uluru = { lat: -25.363, lng: 131.044 };
                             var map = new google.maps.Map(document.getElementById('map'), {
                                 zoom: 4,
                                 center: uluru
@@ -85,7 +114,7 @@
                         }
                     </script>
                     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACTOnS_8awBwqJ7mlb6pJtyLXcnIhDduw&callback=initMap">
-        </script>
+                    </script>
                 </div>
             </div>
             <div id="cityEvents" class="panel panel-info">
